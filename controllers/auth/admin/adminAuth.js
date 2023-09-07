@@ -81,7 +81,7 @@ const adminForgotPassword = async (req, res) => {
         if (!user) return res.status(404).json({error:`You dont have account with ${email}`});
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
         const userData = {token, email}
-        sendEmailForgotPassword(userData)
+        await sendEmailForgotPassword(userData)
         res.status(200).json({message:"Success"})
     } catch(error) {
         res.status(400).json({ error: error.message })
