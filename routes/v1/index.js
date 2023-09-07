@@ -6,7 +6,7 @@ const {adminSignin, adminSignup, adminForgotPassword, adminResetPassword} = requ
 const {vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVendor, vendorForgotPassword, vendorResetPassword} = require("../../controllers/auth/vendor/vendorAuth")
 
 
-// Admin
+// Admin API
 router.post('/signin/admin', adminSignin);
 // router.post('/signup/admin', adminSignup);
 router.post('/signin/admin', adminSignin);
