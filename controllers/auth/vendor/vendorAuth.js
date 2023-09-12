@@ -144,7 +144,7 @@ const vendorForgotPassword = async (req, res) => {
         const user = await vendorSchema.findOne({email});
         if (!user) return res.status(404).json({error:`You dont have account with ${email}`});
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        const userData = {token, email}
+        const userData = {token, email, id:user._id}
         await sendVendorEmailForgotPassword(userData)
         res.status(200).json({message:"Success"})
     } catch(error) {

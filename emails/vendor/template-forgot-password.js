@@ -27,7 +27,7 @@ async function vendorEmailForgotPassword(userData) {
         from: process.env.GMAIL_ID,
         to: userData.email,
         subject: 'Reset Password',
-        html: `<h4>Hello, Please click the below link for reset your password</h4><p><a target="_blank" href="${process.env.SITE_URL}/reset-password/vendor/${userData.token}">${process.env.SITE_URL}/reset-password/vendor/${userData.token}</a></p>`
+        html: `<h4>Hello, Please click the below link for reset your password</h4><p><a target="_blank" href="${process.env.SITE_URL}/reset-password/vendor/${userData.id}/${userData.token}">${process.env.SITE_URL}/reset-password/vendor/${userData.id}/${userData.token}</a></p>`
     };
     await new Promise((resolve, reject) => {
         mailTransporter.sendMail(mailDetails, function (err, data) {
