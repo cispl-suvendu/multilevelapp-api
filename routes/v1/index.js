@@ -3,7 +3,7 @@ const router = express.Router();
 const requireAdminAuth = require("../../middleware/requirAdminAuth")
 const requirVendorAuth = require("../../middleware/requirVendorAuth")
 const {adminSignin, adminSignup, adminForgotPassword, adminResetPassword} = require("../../controllers/auth/admin/adminAuth")
-const {vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVendor, vendorForgotPassword, vendorResetPassword} = require("../../controllers/auth/vendor/vendorAuth")
+const {vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVendor, vendorForgotPassword, vendorResetPassword, getSingleVendor} = require("../../controllers/auth/vendor/vendorAuth")
 const {getVendorActivity, addVendorActivity} = require("../../controllers/activity/vendor/vendorActivityControll")
 const {getAdminActivity, addAdminActivity} = require("../../controllers/activity/admin/adminActivityControll")
 
@@ -15,8 +15,9 @@ router.post('/forgot-password/admin', adminForgotPassword);
 router.patch('/reset-password/admin/:id/:token', adminResetPassword);
 router.get('/admin/:id/activity', requireAdminAuth, getAdminActivity);
 router.post('/admin/:id/activity', requireAdminAuth, addAdminActivity);
-router.get('/vendors', requireAdminAuth, listAllVendor);
-router.patch('/vendor/:id', requireAdminAuth, updateActiveVendor);
+router.get('/admin/vendors', requireAdminAuth, listAllVendor);
+router.patch('/admin/vendor/:id', requireAdminAuth, updateActiveVendor);
+router.get('/admin/vendor/:id', requireAdminAuth, getSingleVendor);
 
 
 // vendor

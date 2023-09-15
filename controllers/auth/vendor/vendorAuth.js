@@ -92,6 +92,17 @@ const listAllVendor = async (req, res) => {
     }
 }
 
+const getSingleVendor = async (req, res) => {
+    const {id} = req.params
+    const data = await vendorSchema.findById({_id:id})
+    try {
+        res.status(200).json(data)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
 const updateActiveVendor = async (req, res) => {
     const { error } = validateActiveVendor.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -171,4 +182,4 @@ const vendorResetPassword = async (req, res) => {
 }
 
 
-module.exports = { vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVendor, vendorResetPassword, vendorForgotPassword };
+module.exports = { vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVendor, vendorResetPassword, vendorForgotPassword, getSingleVendor };
