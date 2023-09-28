@@ -107,18 +107,17 @@ const updateActiveVendor = async (req, res) => {
     const { error } = validateActiveVendor.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     const { isActive } = req.body
+    const {id} = req.params
     try {
-        let currentUser = await vendorSchema.findById(req.params.id);
+        let currentUser = await vendorSchema.findById({_id:id});
         if (!currentUser) {
-            res.status(404).json({ error: "Vendor not found!" })
+           return res.status(404).json({ error: "Vendor not found!" })
         }
-        if (isActive) {
-            currentUser.isActive = isActive
-        }
+        currentUser.isActive = isActive
         await currentUser.save()
-        res.status(201).json(currentUser)
+       return res.status(201).json(currentUser)
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        return res.status(400).json({ message: error.message })
     }
 }
 
