@@ -43,12 +43,13 @@ const vendorSignin = async (req, res) => {
 
         //Create and assign a token
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+        const activeStatus = jwt.sign({ isActive: user.isActive }, process.env.TOKEN_SECRET);
         // res.header("auth-token", token).send(token);
 
-        const { _id, email, firstName, lastName, role, isActive, createdAt } = user;
+        const { _id, email, firstName, lastName, role, createdAt } = user;
 
         const currentUser = {
-            _id, email, firstName, lastName, role, token, isActive, createdAt
+            _id, email, firstName, lastName, role, token, activeStatus, createdAt
         }
         res.status(200).json(currentUser)
     } catch (error) {
@@ -73,8 +74,9 @@ const vendorSignup = async (req, res) => {
     try {
         const saveUserData = await userData.save();
         const token = jwt.sign({ _id: userData._id }, process.env.TOKEN_SECRET);
+        const activeStatus = jwt.sign({ isActive: user.isActive }, process.env.TOKEN_SECRET);
         const { _id, email, firstName, lastName, role, isActive, createdAt } = saveUserData;
-        const registerData = { _id, email, firstName, lastName, role, token, isActive, createdAt };
+        const registerData = { _id, email, firstName, lastName, role, token, activeStatus, createdAt };
         res.status(200).json(registerData)
     }
     catch (error) {

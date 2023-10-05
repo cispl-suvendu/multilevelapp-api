@@ -6,6 +6,7 @@ const {adminSignin, adminSignup, adminForgotPassword, adminResetPassword} = requ
 const {vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVendor, vendorForgotPassword, vendorResetPassword, getSingleVendor} = require("../../controllers/auth/vendor/vendorAuth")
 const {getVendorActivity, addVendorActivity} = require("../../controllers/activity/vendor/vendorActivityControll")
 const {getAdminActivity, addAdminActivity} = require("../../controllers/activity/admin/adminActivityControll")
+const {addNewServiceCategory, getAllServiceCategory, getSingleServiceCategory, updateSingleCategory} = require("../../controllers/service-category/index")
 
 // Admin API
 router.post('/signin/admin', adminSignin);
@@ -18,15 +19,29 @@ router.post('/admin/:id/activity', requireAdminAuth, addAdminActivity);
 router.get('/admin/vendors', requireAdminAuth, listAllVendor);
 router.patch('/admin/vendor/:id', requireAdminAuth, updateActiveVendor);
 router.get('/admin/vendor/:id', requireAdminAuth, getSingleVendor);
+router.post('/admin/services/cat/add', requireAdminAuth, addNewServiceCategory);
+router.get('/admin/services/cat/:id', requireAdminAuth, getSingleServiceCategory);
+router.get('/admin/services/cat', requireAdminAuth, getAllServiceCategory);
+router.patch('/admin/services/cat/edit/:id', requireAdminAuth, updateSingleCategory);
 
 
 // vendor
 router.post('/signin/vendor', vendorSignin);
 router.post('/signup/vendor', vendorSignup);
+router.get('/vendor/:id', requirVendorAuth, getSingleVendor);
 router.patch('/vendor/edit/:id', requirVendorAuth, updateVendor);
 router.post('/forgot-password/vendor', vendorForgotPassword);
 router.patch('/reset-password/vendor/:id/:token', vendorResetPassword);
 router.get('/vendor/:id/activity', requirVendorAuth, getVendorActivity);
 router.post('/vendor/:id/activity', requirVendorAuth, addVendorActivity);
+router.post('/vendor/services/cat/add', requirVendorAuth, addNewServiceCategory);
+router.get('/vendor/services/cat/:id', requirVendorAuth, getSingleServiceCategory);
+router.get('/vendor/services/cat', requirVendorAuth, getAllServiceCategory);
+
+
+// Global
+
+
+
 
 module.exports = router;
