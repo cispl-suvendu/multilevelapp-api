@@ -7,6 +7,8 @@ const {vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVend
 const {getVendorActivity, addVendorActivity} = require("../../controllers/activity/vendor/vendorActivityControll")
 const {getAdminActivity, addAdminActivity} = require("../../controllers/activity/admin/adminActivityControll")
 const {addNewServiceCategory, getAllServiceCategory, getSingleServiceCategory, updateSingleCategory} = require("../../controllers/service-category/index")
+const {addService, listAllService, listServiceByVendorId} = require("../../controllers/service/index")
+
 
 // Admin API
 router.post('/signin/admin', adminSignin);
@@ -37,7 +39,9 @@ router.post('/vendor/:id/activity', requirVendorAuth, addVendorActivity);
 router.post('/vendor/services/cat/add', requirVendorAuth, addNewServiceCategory);
 router.get('/vendor/services/cat/:id', requirVendorAuth, getSingleServiceCategory);
 router.get('/vendor/services/cat', requirVendorAuth, getAllServiceCategory);
-
+router.post('/vendor/services/add', requirVendorAuth, addService);
+router.get('/vendor/services/all', requirVendorAuth, listAllService);
+router.get('/vendor/services/createdby/:id', requirVendorAuth, listServiceByVendorId);
 
 // Global
 
