@@ -36,10 +36,10 @@ const vendorSignin = async (req, res) => {
 
         const user = await vendorSchema.findOne({ email: req.body.email });
 
-        if (!user) return res.status(404).json({error: "You are not a Vendor"});
+        if (!user) return res.status(404).json({ error: "You are not a Vendor" });
 
         const validPass = await bcrypt.compare(req.body.password, user.password);
-        if (!validPass) return res.status(400).json({error:"Password does not match!"});
+        if (!validPass) return res.status(400).json({ error: "Password does not match!" });
 
         //Create and assign a token
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
@@ -53,16 +53,16 @@ const vendorSignin = async (req, res) => {
         }
         res.status(200).json(currentUser)
     } catch (error) {
-        return res.status(505).json({error:error.message});
+        return res.status(505).json({ error: error.message });
     }
 }
 
 
 const vendorSignup = async (req, res) => {
     const { error } = validateRegisterSchema.validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(402).send(error.details[0].message);
     const emailExists = await vendorSchema.findOne({ email: req.body.email });
-    if (emailExists) return res.status(400).json({error: "Email allready exists"});
+    if (emailExists) return res.status(401).json({ error: "Email allready exists" });
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
     const userData = new vendorSchema({
@@ -74,13 +74,13 @@ const vendorSignup = async (req, res) => {
     try {
         const saveUserData = await userData.save();
         const token = jwt.sign({ _id: userData._id }, process.env.TOKEN_SECRET);
-        const activeStatus = jwt.sign({ isActive: user.isActive }, process.env.TOKEN_SECRET);
+        const activeStatus = jwt.sign({ isActive: userData.isActive }, process.env.TOKEN_SECRET);
         const { _id, email, firstName, lastName, role, isActive, createdAt } = saveUserData;
         const registerData = { _id, email, firstName, lastName, role, token, activeStatus, createdAt };
-        res.status(200).json(registerData)
+        return res.status(200).json(registerData)
     }
     catch (error) {
-        res.status(400).json({ message: error.message })
+        return res.status(400).json({ error: error.message })
     }
 }
 
@@ -95,8 +95,8 @@ const listAllVendor = async (req, res) => {
 }
 
 const getSingleVendor = async (req, res) => {
-    const {id} = req.params
-    const data = await vendorSchema.findById({_id:id})
+    const { id } = req.params
+    const data = await vendorSchema.findById({ _id: id })
     try {
         res.status(200).json(data)
     }
@@ -109,15 +109,15 @@ const updateActiveVendor = async (req, res) => {
     const { error } = validateActiveVendor.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     const { isActive } = req.body
-    const {id} = req.params
+    const { id } = req.params
     try {
-        let currentUser = await vendorSchema.findById({_id:id});
+        let currentUser = await vendorSchema.findById({ _id: id });
         if (!currentUser) {
-           return res.status(404).json({ error: "Vendor not found!" })
+            return res.status(404).json({ error: "Vendor not found!" })
         }
         currentUser.isActive = isActive
         await currentUser.save()
-       return res.status(201).json(currentUser)
+        return res.status(201).json(currentUser)
     } catch (error) {
         return res.status(400).json({ message: error.message })
     }
@@ -151,34 +151,34 @@ const updateVendor = async (req, res) => {
 }
 
 const vendorForgotPassword = async (req, res) => {
-    const {email} = req.body
-    try{
-        const user = await vendorSchema.findOne({email});
-        if (!user) return res.status(404).json({error:`You dont have account with ${email}`});
+    const { email } = req.body
+    try {
+        const user = await vendorSchema.findOne({ email });
+        if (!user) return res.status(404).json({ error: `You dont have account with ${email}` });
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        const userData = {token, email, id:user._id}
+        const userData = { token, email, id: user._id }
         await sendVendorEmailForgotPassword(userData)
-        res.status(200).json({message:"Success"})
-    } catch(error) {
+        res.status(200).json({ message: "Success" })
+    } catch (error) {
         res.status(400).json({ error: error.message })
     }
 }
 
 const vendorResetPassword = async (req, res) => {
-    const {token} = req.params;
-    const {password} = req.body;
+    const { token } = req.params;
+    const { password } = req.body;
     jwt.verify(token, process.env.TOKEN_SECRET, async (error, payload) => {
-        if(error) {
-            return res.status(401).json({error: error.message})
+        if (error) {
+            return res.status(401).json({ error: error.message })
         }
-        const {_id} = payload;
+        const { _id } = payload;
         let user = await vendorSchema.findById(_id);
-        if(!user) return res.status(401).json({error: 'Your account is not valid!'})
+        if (!user) return res.status(401).json({ error: 'Your account is not valid!' })
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
         user.password = hashPassword
         await user.save()
-        res.status(201).json({message:"Success"})
+        res.status(201).json({ message: "Success" })
     })
 }
 
