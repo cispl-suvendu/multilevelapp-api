@@ -32,7 +32,6 @@ router.get('/admin/services/groupby/category/:id', requireAdminAuth, listService
 router.get('/admin/services/groupby/createdby/:id', requireAdminAuth, listServiceByVendorId);
 
 
-
 // vendor
 router.post('/signin/vendor', vendorSignin);
 router.post('/signup/vendor', vendorSignup);
