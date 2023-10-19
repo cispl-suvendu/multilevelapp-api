@@ -7,7 +7,7 @@ const {vendorSignin, vendorSignup, listAllVendor, updateActiveVendor, updateVend
 const {getVendorActivity, addVendorActivity} = require("../../controllers/activity/vendor/vendorActivityControll")
 const {getAdminActivity, addAdminActivity} = require("../../controllers/activity/admin/adminActivityControll")
 const {addNewServiceCategory, getAllServiceCategory, getSingleServiceCategory, updateSingleCategory} = require("../../controllers/service-category/index")
-const {addService, listAllService, listServiceByVendorId} = require("../../controllers/service/index")
+const {addService, listAllService, listServiceByVendorId, listServiceByCategoryId, updateSingleService, updateServiceStatusWithVendorStatus, updateServiceStatusWithCategoryStatus} = require("../../controllers/service/index")
 
 
 // Admin API
@@ -25,6 +25,11 @@ router.post('/admin/services/cat/add', requireAdminAuth, addNewServiceCategory);
 router.get('/admin/services/cat/:id', requireAdminAuth, getSingleServiceCategory);
 router.get('/admin/services/cat', requireAdminAuth, getAllServiceCategory);
 router.patch('/admin/services/cat/edit/:id', requireAdminAuth, updateSingleCategory);
+router.get('/admin/services/all', requireAdminAuth, listAllService);
+router.patch('/admin/services/groupby/vendor/edit', requireAdminAuth, updateServiceStatusWithVendorStatus);
+router.patch('/admin/services/groupby/category/edit', requireAdminAuth, updateServiceStatusWithCategoryStatus);
+router.get('/admin/services/groupby/category/:id', requireAdminAuth, listServiceByCategoryId);
+router.get('/admin/services/groupby/createdby/:id', requireAdminAuth, listServiceByVendorId);
 
 
 // vendor
@@ -40,8 +45,8 @@ router.post('/vendor/services/cat/add', requirVendorAuth, addNewServiceCategory)
 router.get('/vendor/services/cat/:id', requirVendorAuth, getSingleServiceCategory);
 router.get('/vendor/services/cat', requirVendorAuth, getAllServiceCategory);
 router.post('/vendor/services/add', requirVendorAuth, addService);
-router.get('/vendor/services/all', requirVendorAuth, listAllService);
-router.get('/vendor/services/createdby/:id', requirVendorAuth, listServiceByVendorId);
+router.get('/vendor/services/groupby/createdby/:id', requirVendorAuth, listServiceByVendorId);
+router.patch('/vendor/service/edit/:id', requireAdminAuth, updateSingleService);
 
 // Global
 
