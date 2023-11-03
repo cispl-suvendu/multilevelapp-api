@@ -50,7 +50,8 @@ router.patch('/vendor/service/edit/:id', requireAdminAuth, updateSingleService);
 
 // Global
 
-
+router.get('/global/services/category/all', getAllServiceCategory);
+router.get('/global/services/groupby/category/:id', listServiceByCategoryId);
 
 
 module.exports = router;

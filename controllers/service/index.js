@@ -115,9 +115,9 @@ const updateServiceStatusWithVendorStatus = async (req, res) => {
     try {
         const data = await Services.updateMany(
             { _id: { $in: serviceIds } },
-            { $set: {servicestatus} },
-            {multi: true}
-         )
+            { $set: { servicestatus } },
+            { multi: true }
+        )
         return res.status(200).json(data)
 
     } catch (error) {
@@ -130,9 +130,9 @@ const updateServiceStatusWithCategoryStatus = async (req, res) => {
     try {
         const data = await Services.updateMany(
             { _id: { $in: serviceIds } },
-            { $set: {servicestatus} },
-            {multi: true}
-         )
+            { $set: { servicestatus } },
+            { multi: true }
+        )
         return res.status(200).json(data)
 
     } catch (error) {
