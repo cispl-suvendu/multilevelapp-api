@@ -8,7 +8,7 @@ const {getVendorActivity, addVendorActivity} = require("../../controllers/activi
 const {getAdminActivity, addAdminActivity} = require("../../controllers/activity/admin/adminActivityControll")
 const {addNewServiceCategory, getAllServiceCategory, getSingleServiceCategory, updateSingleCategory} = require("../../controllers/service-category/index")
 const {addService, listAllService, listServiceByVendorId, listServiceByCategoryId, updateSingleService, updateServiceStatusWithVendorStatus, updateServiceStatusWithCategoryStatus} = require("../../controllers/service/index")
-
+const {createCustomer, listCustomer, listCustomerByServiceId, listCustomerByServiceCategoryId, listCustomerByVendorId} = require("../../controllers/customer/index")
 
 // Admin API
 router.post('/signin/admin', adminSignin);
@@ -52,6 +52,10 @@ router.patch('/vendor/service/edit/:id', requireAdminAuth, updateSingleService);
 
 router.get('/global/services/category/all', getAllServiceCategory);
 router.get('/global/services/groupby/category/:id', listServiceByCategoryId);
-
+router.post('/global/customer/add', createCustomer);
+router.get('/global/customer/all', listCustomer);
+router.get('/global/customer/groupby/service/:id', listCustomerByServiceId);
+router.get('/global/customer/groupby/service/category/:id', listCustomerByServiceCategoryId);
+router.get('/global/customer/groupby/createdby/:id', listCustomerByVendorId);
 
 module.exports = router;
