@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const dotenv = require("dotenv");
 dotenv.config();
+var moment = require('moment');
 
 async function vendorBookingNotification ({customerData, bookedService, seriveProvider}) {
    
@@ -33,7 +34,7 @@ async function vendorBookingNotification ({customerData, bookedService, serivePr
             <li>Service: <strong>${bookedService.name}</strong></li>
             <li>Service Provider Email: <strong>${seriveProvider.email}</strong></li>
             <li>Service Cost: <strong>${bookedService.cost} / per hour</strong></li>
-            <li>Date & Time: <strong>${bookedService.dateTime}</strong></li>
+            <li>Date & Time: <strong>${moment(customerData.dateTime).format("dddd, MMMM Do YYYY, h:mm:ss a")}</strong></li>
             <li>Service Booked By: <strong>${customerData.firstName} ${customerData.lastName}</strong></li>
             <li>Contact Email: <strong>${customerData.email}</strong></li>
         </ul>
