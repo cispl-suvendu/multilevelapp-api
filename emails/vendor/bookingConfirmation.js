@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const dotenv = require("dotenv");
 dotenv.config();
 
-async function customerBookingNotification ({customerData, bookedService, seriveProvider}) {
+async function vendorBookingNotification ({customerData, bookedService, seriveProvider}) {
    
     let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
@@ -26,9 +26,9 @@ async function customerBookingNotification ({customerData, bookedService, serive
     
     let mailDetails = {
         from: process.env.GMAIL_ID,
-        to: customerData.email,
+        to: seriveProvider.email,
         subject: `${bookedService.name} Service Booking Confirmation`,
-        html: `<div><h4>Hello ${customerData.firstName}, Please check the booking details below:</p>
+        html: `<div><h4>Hello ${seriveProvider.firstName}, Please check the booking details below:</p>
         <ul>
             <li>Service: <strong>${bookedService.name}</strong></li>
             <li>Service Provider Email: <strong>${seriveProvider.email}</strong></li>
@@ -46,11 +46,11 @@ async function customerBookingNotification ({customerData, bookedService, serive
                 console.log(err.message);
                 reject(err);
             } else {
-                console.log(`Customer's Booking Confirmation email sent successfully to ${customerData.email}`);
+                console.log(`Vendor's Booking Confirmation email sent successfully to ${seriveProvider.email}`);
                 resolve(data);
             }
         });
     });
 }
 
-module.exports = customerBookingNotification
+module.exports = vendorBookingNotification

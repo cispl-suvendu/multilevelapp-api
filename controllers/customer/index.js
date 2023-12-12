@@ -1,6 +1,8 @@
 const Customer = require("../../models/customer/customerModel")
 const Service = require("../../models/vendor/ServiceModule")
-const bookingNotification = require("../../emails/customer/bookingNotification")
+const Vendor = require("../../models/vendor/vendorModel")
+const customerBookingNotification = require("../../emails/customer/bookingNotification")
+const vendorBookingNotification = require("../../emails/vendor/bookingConfirmation")
 
 const createCustomer = async (req, res) => {
     const { firstName, lastName, email, dateTime, serviceId, categoryId, serviceCratedBy } = req.body
@@ -9,9 +11,10 @@ const createCustomer = async (req, res) => {
             firstName, lastName, email, dateTime, serviceId, categoryId, serviceCratedBy
         })
         const bookedService = await Service.findById(serviceId)
+        const seriveProvider = await Vendor.findById(serviceCratedBy)
         await customerData.save()
-        //await bookingNotification({...customerData, ...bookedService})
-        console.log('details:', {...customerData, ...bookedService})
+        await customerBookingNotification({ customerData, bookedService, seriveProvider })
+        await vendorBookingNotification({ customerData, bookedService, seriveProvider })
         return res.status(200).json(customerData)
     } catch (error) {
         return res.status(400).json({ message: error.message })
