@@ -1,12 +1,17 @@
 const Customer = require("../../models/customer/customerModel")
+const Service = require("../../models/vendor/ServiceModule")
+const bookingNotification = require("../../emails/customer/bookingNotification")
 
 const createCustomer = async (req, res) => {
-    const { firstName, lastName, email, serviceId, categoryId, serviceCratedBy } = req.body
+    const { firstName, lastName, email, dateTime, serviceId, categoryId, serviceCratedBy } = req.body
     try {
         const customerData = new Customer({
-            firstName, lastName, email, serviceId, categoryId, serviceCratedBy
+            firstName, lastName, email, dateTime, serviceId, categoryId, serviceCratedBy
         })
+        const bookedService = await Service.findById(serviceId)
         await customerData.save()
+        //await bookingNotification({...customerData, ...bookedService})
+        console.log('details:', {...customerData, ...bookedService})
         return res.status(200).json(customerData)
     } catch (error) {
         return res.status(400).json({ message: error.message })

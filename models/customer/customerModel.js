@@ -9,6 +9,10 @@ const customerSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    dateTime: {
+        type: String,
+        trim: true
+    },
     email: {
         type: String,
         required: [true, 'Email is required field!'],
